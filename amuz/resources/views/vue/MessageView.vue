@@ -10,7 +10,7 @@
 
 
   <Disclosure as="other_nav" class="  relative bg-white items-center  ">
-    
+
     <div class="mt-16 mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 h-16 flex items-center ">
       <div class="flex items-center  ">
         <div class="absolute right-1/4 sm:items-stretch sm:justify-start">
@@ -53,7 +53,7 @@
           <p class="mb-[15px] font-bold">수신번호</p>
           <div class="flex mb-[15px]">
 
-            <input type="text"
+            <input type="text" v-model="message.content.receiver_number"
               class="py-2 px-4 rounded-md bg-[#F4F5F6] w-[439px] h-[50px] focus:outline-none focus:ring-0"
               placeholder="휴대폰번호 (숫자만 입력)" />
             <button class="text-[#FFFFFF] rounded-md mx-[10px] bg-[#4F44F0] w-[114px] h-[50px]">+ 추가</button>
@@ -83,7 +83,8 @@
           <div class="w-full h-[1px] bg-gray-100 mb-[25px]"></div>
           <p class="mb-[15px] font-bold">발신번호</p>
 
-          <input type="text" class="py-2 px-4 rounded-md bg-[#F4F5F6] w-full h-[50px] focus:outline-none focus:ring-0"
+          <input type="text" v-model="message.content.sender_number"
+            class="py-2 px-4 rounded-md bg-[#F4F5F6] w-full h-[50px] focus:outline-none focus:ring-0"
             placeholder="전송할 발신번호 선택" />
 
           <div class="w-full h-[1px] bg-gray-100 mb-[25px] mt-[25px]"></div>
@@ -91,7 +92,7 @@
 
           <div class="w-full h-auto border border-[#CECECE] rounded-md p-[20px] bg-[#F6F6F6]">
 
-            <input type="text"
+            <input type="text" v-model="message.content.title"
               class="py-2 px-4 rounded-md bg-white w-full border border-[#CECECE] h-[50px] focus:outline-none focus:ring-0"
               placeholder="제목을 입력해주세요. (단문 SMS는 제외, 최대 30byte)" />
 
@@ -111,6 +112,7 @@
 
               <textarea
                 class="py-2 px-4 rounded-md bg-transparent w-full  h-[250px] focus:outline-none focus:ring-0 resize-none"
+                v-model="message.content.content"
                 placeholder="내용을 입력해 주세요. 90byte 초과 시 장문 문자로, 이미지 추가 시 포토 문자로 자동 전환 됩니다."></textarea>
               <div class="flex justify-end mt-[8px]">
                 <button class="text-[#646464] rounded-full mx-[10px] bg-[#F5F5F5] w-[101px] h-[35px]">치환코드</button>
@@ -148,9 +150,9 @@
         </div>
 
         <!-- 오른쪽 -->
-        <div class=" w-5/12 h-auto bg-transparent p-[30px]" >
+        <div class=" w-5/12 h-auto bg-transparent p-[30px]">
 
-          <div class=" fixed top-20 w-[401px] h-[775px] border-[4px] border-[#4D4D4D] rounded-xl bg-[#EAF8FF]">
+          <div class=" fixed top-48 w-[300px] h-[600px] border-[4px] border-[#4D4D4D] rounded-xl bg-[#EAF8FF]">
 
           </div>
 
@@ -179,7 +181,7 @@
       </div>
       <div class="w-full h-[1px] bg-gray-100 mb-[25px] mt-[25px]"></div>
 
-      <button class="text-white rounded-xl bg-[#4F44F0]  mx-[10px] w-full h-[50px]">발송하기</button>
+      <button class="text-white rounded-xl bg-[#4F44F0]  mx-[10px] w-full h-[50px]" @click="sendMessage">발송하기</button>
 
 
 
@@ -195,10 +197,24 @@
 <script setup>
 import Frame from '../../js/components/white_nav.vue'
 import { Disclosure } from '@headlessui/vue'
+import axios from 'axios'
 
 import { reactive } from 'vue'
+import store from '../../store/index'; // Vuex 스토어 import
 
 
+
+
+const message = reactive({
+  content: {
+    email: 'aaaa@asda.com',
+    receiver_number: '',
+    sender_number: '',
+    title: '',
+    content: '',
+
+  }
+})
 const navigation_2 = reactive([
   { name: '메세지 전송', href: '/message', current: true },
   { name: '발신번호 관리', href: '/credit', current: false },
@@ -209,6 +225,31 @@ const navigation_2 = reactive([
 ])
 
 
+const sendMessage = () => {
+
+  const content = message.content
+  const token = store.state.token
+  alert(store.state.token)
+alert(content.receiver_number)
+
+  axios.post('http://localhost:8000/api/message', content, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  }).then((res) => {
+    alert("전달 성공")
+    // 요청 성공 시 처리
+  }).catch((error) => {
+    alert(error)
+    // 요청 실패 시 처리
+  });
+
+
+
+
+
+
+}
 
 
 

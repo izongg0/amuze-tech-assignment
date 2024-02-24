@@ -44,8 +44,15 @@
                 <p
                     class="text-5xl font-bold bg-gradient-to-r from-[#9FBAFD] to-[#4E81FF] bg-clip-text text-transparent mb-[15px]">
                     문자 서비스 SENDGO</p>
-                <button class="text-white mt-[40px] mx-[10px] rounded-full bg-[#6250FF] w-[206px] h-[65px]">회원가입</button>
-                <button class="text-white mt-[40px] mx-[10px] rounded-full bg-[#242424] w-[206px] h-[65px]">로그인</button>
+                <router-link to="/signup">
+                    <button class="text-white mt-[40px] mx-[10px] rounded-full bg-[#6250FF] w-[206px] h-[65px]">
+
+                        회원가입</button>
+                </router-link>
+
+                <router-link to="/login"> <button
+                        class="text-white mt-[40px] mx-[10px] rounded-full bg-[#242424] w-[206px] h-[65px]">로그인</button>
+                </router-link>
 
             </div>
 

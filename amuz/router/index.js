@@ -2,6 +2,9 @@
 import Main from '../resources/views/vue/MainView.vue'
 import Credit from '../resources/views/vue/CreditView.vue'
 import Message from '../resources/views/vue/MessageView.vue'
+import Login from '../resources/views/vue/LoginView.vue'
+import Signup from '../resources/views/vue/SignupView.vue'
+
 import { createRouter, createWebHistory } from 'vue-router'
 
 
@@ -23,6 +26,16 @@ const routes = createRouter({
       path: '/credit',
       name: 'Credit',
       component: Credit
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login
+    },
+    {
+      path: '/signup',
+      name: 'Signup',
+      component: Signup
     }
   ]
 })
