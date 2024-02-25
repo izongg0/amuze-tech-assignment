@@ -1,7 +1,7 @@
 
 
 <template>
-  <Disclosure as="nav" class="fixed top-0 z-10 w-screen  bg-white items-center  ">
+  <Disclosure as="nav" class="fixed top-0 z-10 w-screen bg-opacity-90 bg-white items-center  ">
     <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 h-16 flex items-center">
       <div class="flex items-center ">
         <div class="flex items-center justify-items-center sm:items-stretch sm:justify-start">

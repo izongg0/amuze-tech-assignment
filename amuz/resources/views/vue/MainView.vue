@@ -1,5 +1,5 @@
 <template>
-    <Disclosure as="nav" class="fixed top-0 w-screen z-10  bg-black items-center  ">
+     <Disclosure as="nav" class=" w-screen relative top-0 z-20  bg-black items-center  ">
         <div class="   bg-black mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 h-16 flex items-center">
             <div class="flex items-center ">
 
@@ -27,6 +27,10 @@
         <div class="md:w-auto h-[1px] bg-gray-500"></div>
 
     </Disclosure>
+
+    
+    <Frame></Frame>
+   
 
 
 
@@ -288,6 +292,7 @@
 import Footer from '../../js/components/Footer.vue'
 import { Disclosure } from '@headlessui/vue'
 import { reactive } from 'vue'
+import Frame from '../../js/components/white_nav.vue'
 
 const navigation = reactive([
     { name: '메세지', href: '/message', current: true },

@@ -1,14 +1,5 @@
 <template>
   <Frame></Frame>
-
-
-
-
-  <!-- -------------- -->
-
-
-
-
   <Disclosure as="other_nav" class="  relative bg-white items-center  ">
 
     <div class="mt-16 mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 h-16 flex items-center ">
@@ -178,12 +169,14 @@
         </div>
 
         <!-- 오른쪽 -->
-        <div class=" w-5/12 h-auto bg-transparent p-[30px]">
+        <div :class="{'flex items-end' : state.bottom}" class=" w-5/12 h-auto bg-transparent p-[30px] ">
 
-          <div class=" fixed top-48 w-[300px] h-[600px] border-[4px] border-[#4D4D4D] rounded-xl bg-[#EAF8FF]">
+          <!-- <div class=" fixed top-48 w-[300px] h-[600px] border-[4px] border-[#4D4D4D] rounded-xl bg-[#EAF8FF]">
 
+          </div> -->
+          <div :class="{ 'fixed top-16': state.isFixed }"
+            class="w-[300px] h-[600px] border-[4px] border-[#4D4D4D] rounded-xl bg-[#EAF8FF]">
           </div>
-
         </div>
 
 
@@ -225,9 +218,51 @@ import { Disclosure } from '@headlessui/vue'
 import axios from 'axios'
 import Footer from '../../js/components/Footer.vue'
 
-import { reactive } from 'vue'
+import { reactive, onMounted, onBeforeUnmount } from 'vue'
 import store from '../../store/index';
 
+
+
+const state = reactive({
+  isFixed: false,
+  bottom: false
+});
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', handleScroll);
+});
+
+const handleScroll = () => {
+
+  switch (true) {
+  case window.scrollY < 514:
+    state.isFixed = false;
+    state.bottom = false;
+    break;
+  case window.scrollY >= 514 && window.scrollY < 1370:
+    state.isFixed = true;
+    state.bottom = false;
+    break;
+  case window.scrollY >= 1370:
+    state.isFixed = false;
+    state.bottom = true;
+    break;
+  default:
+    break;
+}
+
+  // if (514< window.scrollY < 1370){
+  //   state.isFixed = false
+  // }else if()
+  // state.isFixed = window.scrollY > 514;
+  // state.isFixed = window.scrollY < 1370;
+  // state.bottom = window.scrollY < 1370;
+
+};
 
 
 
