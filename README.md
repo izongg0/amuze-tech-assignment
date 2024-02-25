@@ -15,3 +15,4 @@
 - Laravel Passport를 통한 토큰 기반 로그인, 회원가입 구현
 - vue axios 라이브러리를 통한 http 통신
 - vuex, vuex-persistedstate의 store을 통한 유저 토큰 및 이메일 저장
+- messages, receiver 테이블 1:n 구현으로 다수의 수신자 전달  
