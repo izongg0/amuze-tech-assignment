@@ -128,27 +128,18 @@
     </div>
 
   </div>
+  <Footer></Footer>
 </template>
 
 <script setup>
-// import { reactive } from 'vue'
 import Frame from '../../js/components/white_nav.vue'
-
-
-
+import Footer from '../../js/components/Footer.vue'
 import { reactive } from 'vue'
-
-
 
 const navigation_2 = reactive([
   { name: '크레딧 구매', href: '/message', current: true },
   { name: '크레딧 내역', href: '/credit', current: false },
 
-
-
 ])
-
-
-
 
 </script>

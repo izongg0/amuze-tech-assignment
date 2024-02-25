@@ -134,16 +134,44 @@
           <div class="w-full h-[1px] bg-gray-100 mb-[25px] mt-[25px]"></div>
 
           <div class="flex justify-between">
-            <p>광고성 문자(080 수신거부번호 포함)</p>
-            <img src="../assets/toggle.svg">
-
+            <p class="mt-[5px]">광고성 문자(080 수신거부번호 포함)</p>
+            <div class="flex justify-between items-center" @click="message.content.isad = !message.content.isad">
+              <div class="w-16 h-10 flex items-center bg-gray-300 rounded-full p-1 duration-300 ease-in-out"
+                :class="{ 'bg-green-400': message.content.isad }">
+                <div class="bg-white w-8 h-8 rounded-full shadow-md transform duration-300 ease-in-out"
+                  :class="{ 'translate-x-6': message.content.isad, }"></div>
+              </div>
+            </div>
 
           </div>
+
+
           <div class="w-full h-[1px] bg-gray-100 mb-[25px] mt-[25px]"></div>
           <p class="mb-[15px]">이미지 추가</p>
-          <img src="../assets/addimg.svg" class="mb-[15px]">
+          <div class="flex items-center">
+            <div class="w-[100px] mr-[10px] ">
+              <label for="fileInput">
+                <img src="../assets/addimg.svg" class="mb-[15px]" />
+              </label>
+              <input id="fileInput" type="file" class="hidden" @change="handleFileUpload">
+
+            </div>
+            <img v-if="img.image" :src="img.image" class="mb-2 w-[100px] h-[100px]" />
+
+          </div>
+
+
           <p class="text-[#797979]">- 이미지는 최대 3장까지 첨부 가능합니다.</p>
           <p class="text-[#797979]">- 이미지 파일 형식은 JPG, PNG, GIF만 가능합니다.</p>
+
+
+
+
+
+          <!-- <input type="file" @change="handleFileUpload"> -->
+          <!-- <button @click="uploadImage">Upload Image</button> -->
+
+
 
 
 
@@ -185,33 +213,43 @@
 
 
 
-      <!-- 박스 안 -->
     </div>
 
   </div>
-
-
-  <!-- -------- 여기부터 ------ -->
+  <Footer></Footer>
 </template>
 
 <script setup>
 import Frame from '../../js/components/white_nav.vue'
 import { Disclosure } from '@headlessui/vue'
 import axios from 'axios'
+import Footer from '../../js/components/Footer.vue'
 
 import { reactive } from 'vue'
-import store from '../../store/index'; // Vuex 스토어 import
+import store from '../../store/index';
 
 
 
+
+
+const handleFileUpload = (event) => {
+  message.content.image = event.target.files[0];
+  img.image = URL.createObjectURL(event.target.files[0])
+}
+
+const img = reactive({
+  image: null
+})
 
 const message = reactive({
   content: {
-    email: 'aaaa@asda.com',
+    email: store.state.email,
     receiver_number: '',
     sender_number: '',
     title: '',
     content: '',
+    isad: false,
+    image: ''
 
   }
 })
@@ -225,29 +263,36 @@ const navigation_2 = reactive([
 ])
 
 
+
+
 const sendMessage = () => {
 
   const content = message.content
   const token = store.state.token
-  alert(store.state.token)
-alert(content.receiver_number)
 
-  axios.post('http://localhost:8000/api/message', content, {
+
+  const formData = new FormData();
+  formData.append('image', message.content.image);
+  formData.append('email', message.content.email);
+  formData.append('receiver_number', message.content.receiver_number);
+  formData.append('sender_number', message.content.sender_number);
+  formData.append('title', message.content.title);
+  formData.append('content', message.content.content);
+  formData.append('isad', message.content.isad);
+
+
+  axios.post('/api/messages', formData, {
     headers: {
-      Authorization: `Bearer ${token}`
+      'Authorization': 'Bearer ' + token
     }
-  }).then((res) => {
-    alert("전달 성공")
-    // 요청 성공 시 처리
-  }).catch((error) => {
-    alert(error)
-    // 요청 실패 시 처리
-  });
-
-
-
-
-
+  })
+    .then(response => {
+      alert("전송하였습니다.")
+      console.log('Image uploaded successfully');
+    })
+    .catch(error => {
+      console.error('Error uploading image', error);
+    });
 
 }
 

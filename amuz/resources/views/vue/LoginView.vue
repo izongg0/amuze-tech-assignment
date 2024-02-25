@@ -121,9 +121,14 @@ const login = () => {
         },
     }).then((res) => {
         const token = res.data['token']
+        const email = res.data['email']
+
         console.log("성공", res);
         store.dispatch('login', token);
         router.push('/')
+
+        store.dispatch('login', { token, email });
+
 
     }).catch((res) => {
         alert("정보를 다시 확인해주세요.")

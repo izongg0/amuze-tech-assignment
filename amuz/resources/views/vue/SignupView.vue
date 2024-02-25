@@ -110,12 +110,6 @@ const signUp = () => {
             });
 
 
-            // axios.post('http://localhost:8000/api/v1/signup', { content }).then((res) => {
-            //     console.log("성공", res);
-            // }).catch((res) => {
-            //     console.error("실패 ", res);
-            // });
-
         } else {
             alert("약관에 동의해주세요.")
         }

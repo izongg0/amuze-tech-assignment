@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PassportAuthController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\MessagesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,10 +21,9 @@ use App\Http\Controllers\MessageController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-// Route::post('/message', 'App\Http\Controllers\MessageController@store');
 
 Route::middleware('auth:api')->group(function () {
-    Route::post('/message', 'App\Http\Controllers\MessageController@store');
+    Route::post('/messages', 'App\Http\Controllers\MessagesController@store');
 });
 
 Route::post('v1/register', [PassportAuthController::class, 'register']);

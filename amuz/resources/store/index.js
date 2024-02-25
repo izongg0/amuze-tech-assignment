@@ -4,23 +4,27 @@ import createPersistedState from 'vuex-persistedstate';
 const store = createStore({
     state() {
         return {
-            token: null
+            token: null,
+            email: null
         };
     },
     mutations: {
         setToken(state, token) {
             state.token = token;
+        },
+        setEmail(state, email) {
+            state.email = email;
         }
     },
     actions: {
-        login({ commit }, token) {
+        login({ commit }, { token, email }) {
             commit('setToken', token);
+            commit('setEmail', email);
         }
     },
     plugins: [createPersistedState({
-        paths: ["token"]
+        paths: ['token', 'email']
     })]
 });
-
 
 export default store;
