@@ -25,6 +25,6 @@ class MessagesController extends Controller
         $message->isad = $request->input('isad') === 'true' ? true : false;
         $message->save();
     
-        return response()->json(['messages' => 'Message created successfully'], 201);
+        return response()->json(['messages' => 'Message created successfully','id' => $message->id], 201);
     }
 }

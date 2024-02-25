@@ -20,7 +20,7 @@
 
 
   <div class="h-auto w-screen md:w-auto bg-[#F2F4F8] flex items-start grid justify-items-center">
-    <div class="p-[70px] bg-white rounded-3xl w-[1223px] h-auto mt-[50px]  grid justify-items-center  ">
+    <div class="p-[70px] bg-white rounded-3xl w-[1223px] h-auto mt-[50px] mb-[130px]  grid justify-items-center  ">
 
       <p class="text-3xl font-bold mt-[40px]">메시지 전송</p>
       <div class="flex mt-[50px]">
@@ -44,15 +44,22 @@
           <p class="mb-[15px] font-bold">수신번호</p>
           <div class="flex mb-[15px]">
 
-            <input type="text" v-model="message.content.receiver_number"
+
+
+            <input type="text" v-model="phoneNum.newReceiverNumber"
               class="py-2 px-4 rounded-md bg-[#F4F5F6] w-[439px] h-[50px] focus:outline-none focus:ring-0"
               placeholder="휴대폰번호 (숫자만 입력)" />
-            <button class="text-[#FFFFFF] rounded-md mx-[10px] bg-[#4F44F0] w-[114px] h-[50px]">+ 추가</button>
+            <button @click="addReceiverNumber"
+              class="text-[#FFFFFF] rounded-md mx-[10px] bg-[#4F44F0] w-[114px] h-[50px]">+ 추가</button>
 
           </div>
 
+          <!-- 여기 ! -->
           <div class="w-full h-[200px] border border-[#CECECE] rounded-md bg-transparent">
 
+            <ul>
+              <li v-for="(number, index) in phoneNum.receiverNumbers" :key="index">{{ number }}</li>
+            </ul>
 
           </div>
 
@@ -169,7 +176,7 @@
         </div>
 
         <!-- 오른쪽 -->
-        <div :class="{'flex items-end' : state.bottom}" class=" w-5/12 h-auto bg-transparent p-[30px] ">
+        <div :class="{ 'flex items-end': state.bottom }" class=" w-5/12 h-auto bg-transparent p-[30px] ">
 
           <!-- <div class=" fixed top-48 w-[300px] h-[600px] border-[4px] border-[#4D4D4D] rounded-xl bg-[#EAF8FF]">
 
@@ -222,6 +229,21 @@ import { reactive, onMounted, onBeforeUnmount } from 'vue'
 import store from '../../store/index';
 
 
+const phoneNum = reactive({
+  newReceiverNumber: '',
+  receiverNumbers: [],
+});
+
+
+
+const addReceiverNumber = () => {
+  if (phoneNum.newReceiverNumber.trim() !== '') {
+    phoneNum.receiverNumbers.push(phoneNum.newReceiverNumber);
+    phoneNum.newReceiverNumber = '';
+  }
+
+  console.log(Object.values(phoneNum.receiverNumbers))
+};
 
 const state = reactive({
   isFixed: false,
@@ -239,28 +261,23 @@ onBeforeUnmount(() => {
 const handleScroll = () => {
 
   switch (true) {
-  case window.scrollY < 514:
-    state.isFixed = false;
-    state.bottom = false;
-    break;
-  case window.scrollY >= 514 && window.scrollY < 1370:
-    state.isFixed = true;
-    state.bottom = false;
-    break;
-  case window.scrollY >= 1370:
-    state.isFixed = false;
-    state.bottom = true;
-    break;
-  default:
-    break;
-}
+    case window.scrollY < 514:
+      state.isFixed = false;
+      state.bottom = false;
+      break;
+    case window.scrollY >= 514 && window.scrollY < 1370:
+      state.isFixed = true;
+      state.bottom = false;
+      break;
+    case window.scrollY >= 1370:
+      state.isFixed = false;
+      state.bottom = true;
+      break;
+    default:
+      break;
+  }
 
-  // if (514< window.scrollY < 1370){
-  //   state.isFixed = false
-  // }else if()
-  // state.isFixed = window.scrollY > 514;
-  // state.isFixed = window.scrollY < 1370;
-  // state.bottom = window.scrollY < 1370;
+
 
 };
 
@@ -275,6 +292,10 @@ const handleFileUpload = (event) => {
 const img = reactive({
   image: null
 })
+
+
+
+
 
 const message = reactive({
   content: {
@@ -302,32 +323,72 @@ const navigation_2 = reactive([
 
 const sendMessage = () => {
 
-  const content = message.content
+
   const token = store.state.token
 
+  if (token != null && token !="") {
 
-  const formData = new FormData();
-  formData.append('image', message.content.image);
-  formData.append('email', message.content.email);
-  formData.append('receiver_number', message.content.receiver_number);
-  formData.append('sender_number', message.content.sender_number);
-  formData.append('title', message.content.title);
-  formData.append('content', message.content.content);
-  formData.append('isad', message.content.isad);
+    const formData = new FormData();
+    formData.append('image', message.content.image);
+    formData.append('email', message.content.email);
+    formData.append('receiver_number', phoneNum.receiverNumbers[0]);
+    formData.append('sender_number', message.content.sender_number);
+    formData.append('title', message.content.title);
+    formData.append('content', message.content.content);
+    formData.append('isad', message.content.isad);
 
 
-  axios.post('/api/messages', formData, {
-    headers: {
-      'Authorization': 'Bearer ' + token
-    }
-  })
-    .then(response => {
-      alert("전송하였습니다.")
-      console.log('Image uploaded successfully');
+    axios.post('/api/messages', formData, {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
     })
-    .catch(error => {
-      console.error('Error uploading image', error);
-    });
+      .then(response => {
+        alert("전송하였습니다.")
+        console.log(response.data)
+        send_receiver.message_id = Number(response.data['id']);
+        console.log('Image uploaded successfully');
+
+
+
+
+
+        for (const number in phoneNum.receiverNumbers) {
+          console.log(response.data['id'])
+          console.log(phoneNum.receiverNumbers[number])
+          axios.post('/api/messages/receiver', {
+
+            message_id: response.data['id'],
+            receiver_number: phoneNum.receiverNumbers[number]
+
+          }, {
+            headers: {
+              'Authorization': 'Bearer ' + token
+            }
+          })
+            .then(response => {
+              alert("전송하였습니다.")
+            })
+            .catch(error => {
+            });
+
+        }
+
+
+      })
+      .catch(error => {
+        console.error('Error uploading image', error);
+      });
+
+
+
+
+
+
+  }else{
+    alert("로그인을 해주세요.")
+  }
+
 
 }
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\PassportAuthController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\MessagesController;
+use App\Http\Controllers\ReceiverController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,9 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/messages', 'App\Http\Controllers\MessagesController@store');
 });
 
+Route::middleware('auth:api')->group(function () {
+    Route::post('/messages/receiver', 'App\\Http\\Controllers\\ReceiverController@store');
+});
 Route::post('v1/register', [PassportAuthController::class, 'register']);
 Route::post('v1/login', [PassportAuthController::class, 'login']);
 Route::middleware('auth:api')->group(function () {
