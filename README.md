@@ -16,3 +16,7 @@
 - vue axios 라이브러리를 통한 http 통신
 - vuex, vuex-persistedstate의 store을 통한 유저 토큰 및 이메일 저장
 - messages, receiver 테이블 1:n 구현으로 다수의 수신자 전달  
+
+##
+
+![image](https://github.com/izongg0/amuze-tech-assignment/assets/108528803/26b2a82d-267f-4936-8951-08d1fc93c354)
