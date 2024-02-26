@@ -21,7 +21,7 @@
                         class="flex w-[700px] h-[50px] py-2 px-4 rounded-md bg-white w-[700px] mb-[30px] border border-[#CECECE]">
 
                         <img src="../assets/pw.svg" alt="">
-                        <input type="text" v-model="logininf.loginform.password"
+                        <input type="password" v-model="logininf.loginform.password"
                             class="w-full focus:outline-none focus:ring-0" placeholder="비밀번호(영문, 숫자, 특수문자 포함 8~30자)" />
                     </div>
 

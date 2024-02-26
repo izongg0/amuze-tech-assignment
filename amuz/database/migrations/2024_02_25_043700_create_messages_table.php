@@ -14,10 +14,9 @@ return new class extends Migration
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
             $table->string('email');
-            $table->string('receiver_number');
             $table->string('sender_number');
             $table->string('title');
-            $table->string('image'); // 이미지 파일의 경로를 저장
+            $table->string('image')->nullable(); 
             $table->text('content');
             $table->boolean('isad'); // isad 필드 추가
             $table->timestamps();

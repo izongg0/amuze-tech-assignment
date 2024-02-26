@@ -1,5 +1,5 @@
 <template>
-     <Disclosure as="nav" class=" w-screen relative top-0 z-20  bg-black items-center  ">
+     <Disclosure as="nav" class=" w-screen md:w-auto relative top-0 z-20  bg-black items-center  ">
         <div class="   bg-black mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 h-16 flex items-center">
             <div class="flex items-center ">
 

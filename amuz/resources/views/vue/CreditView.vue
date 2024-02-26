@@ -53,22 +53,22 @@
 
 
         <div class="w-[347px] h-[459px] bg-white py-[50px] px-[30px] mx-[20px]">
-          <p class="text-2xl font-bold mb-[8px]">30,000 원</p>
-          <p class="text-[#7B7B7B]">총 66,667건 발송가능합니다 </p>
+          <p class="text-2xl font-bold mb-[8px]">10,000 원</p>
+          <p class="text-[#7B7B7B]">총 76,667건 발송가능합니다</p>
           <p class="text-[#7B7B7B]">1건당 15원에 결제가능합니다</p>
           <div class="flex w-full justify-between mt-[23px]">
-            <p class="pt-[5px]">330,000 크레딧</p>
+            <p class="pt-[5px]">110,000 크레딧</p>
             <div class="rounded-full w-[70px] h-[33px] bg-[#E0EDFF] text-[#2116BF] flex items-center justify-center">+ 10%
             </div>
           </div>
           <div class="bg-[#F4F5F6] rounded-md h-[88px] mt-[40px] p-[20px]  ">
             <div class="flex justify-between ">
               <p class="text-[#6E6E6E]">기본 크레딧</p>
-              <p>300,000</p>
+              <p>100,000</p>
             </div>
             <div class="flex justify-between ">
               <p class="text-[#6E6E6E]">추가 크레딧</p>
-              <p>+ 30,000</p>
+              <p>+ 10,000</p>
             </div>
           </div>
           <button class="w-full h-[50px] bg-[#5146F0] text-white rounded-md mt-[30px]">구매하기</button>
@@ -99,22 +99,22 @@
 
 
         <div class="w-[347px] h-[459px] bg-white py-[50px] px-[30px] mx-[20px]">
-          <p class="text-2xl font-bold mb-[8px]">30,000 원</p>
+          <p class="text-2xl font-bold mb-[8px]">10,000 원</p>
           <p class="text-[#7B7B7B]">총 66,667건 발송가능합니다 </p>
           <p class="text-[#7B7B7B]">1건당 15원에 결제가능합니다</p>
           <div class="flex w-full justify-between mt-[23px]">
-            <p class="pt-[5px]">330,000 크레딧</p>
+            <p class="pt-[5px]">110,000 크레딧</p>
             <div class="rounded-full w-[70px] h-[33px] bg-[#E0EDFF] text-[#2116BF] flex items-center justify-center">+ 10%
             </div>
           </div>
           <div class="bg-[#F4F5F6] rounded-md h-[88px] mt-[40px] p-[20px]  ">
             <div class="flex justify-between ">
               <p class="text-[#6E6E6E]">기본 크레딧</p>
-              <p>300,000</p>
+              <p>100,000</p>
             </div>
             <div class="flex justify-between ">
               <p class="text-[#6E6E6E]">추가 크레딧</p>
-              <p>+ 30,000</p>
+              <p>+ 10,000</p>
             </div>
           </div>
           <button class="w-full h-[50px] bg-[#5146F0] text-white rounded-md mt-[30px]">구매하기</button>

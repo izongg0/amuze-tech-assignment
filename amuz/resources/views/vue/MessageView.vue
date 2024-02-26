@@ -45,22 +45,26 @@
           <div class="flex mb-[15px]">
 
 
-
             <input type="text" v-model="phoneNum.newReceiverNumber"
               class="py-2 px-4 rounded-md bg-[#F4F5F6] w-[439px] h-[50px] focus:outline-none focus:ring-0"
-              placeholder="휴대폰번호 (숫자만 입력)" />
+              placeholder="휴대폰번호 (숫자만 입력)" oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+
+
             <button @click="addReceiverNumber"
               class="text-[#FFFFFF] rounded-md mx-[10px] bg-[#4F44F0] w-[114px] h-[50px]">+ 추가</button>
 
           </div>
 
-          <!-- 여기 ! -->
-          <div class="w-full h-[200px] border border-[#CECECE] rounded-md bg-transparent">
 
+
+
+          <div class="w-full h-[200px] border border-[#CECECE] rounded-md bg-transparent p-[20px] ">
             <ul>
-              <li v-for="(number, index) in phoneNum.receiverNumbers" :key="index">{{ number }}</li>
+              <li v-for="(number, index) in phoneNum.receiverNumbers" :key="index">
+                {{ number }}
+                <button @click="removeReceiver(index)" class="ml-2 text-red-500">X</button>
+              </li>
             </ul>
-
           </div>
 
           <div class="flex mt-[15px] mb-[25px]">
@@ -83,7 +87,8 @@
 
           <input type="text" v-model="message.content.sender_number"
             class="py-2 px-4 rounded-md bg-[#F4F5F6] w-full h-[50px] focus:outline-none focus:ring-0"
-            placeholder="전송할 발신번호 선택" />
+            placeholder="전송할 발신번호 선택" 
+            oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
 
           <div class="w-full h-[1px] bg-gray-100 mb-[25px] mt-[25px]"></div>
           <p class="mb-[15px] font-bold">메세지 입력</p>
@@ -97,7 +102,8 @@
             <div class="flex justify-between mt-[20px] mb-[20px]">
               <button class="text-[#FFFFFF] rounded-full mx-[10px] bg-[#5E2BFF] w-[101px] h-[35px]">단문 SMS</button>
               <div class="flex">
-                <p class="text-[#5E2BFF]">0</p>
+                <!-- 여기 -->
+                <p class="text-[#5E2BFF]">{{ message.content.byte }}</p>
                 <p>/</p>
                 <p>90byte</p>
                 <img src="../assets/reload.svg" class="ml-[10px]">
@@ -108,10 +114,17 @@
             <div class="w-full  border border-[#CECECE] rounded-md p-[20px] bg-white p-[15px]">
 
 
-              <textarea
+              <!-- <textarea
                 class="py-2 px-4 rounded-md bg-transparent w-full  h-[250px] focus:outline-none focus:ring-0 resize-none"
                 v-model="message.content.content"
+                placeholder="내용을 입력해 주세요. 90byte 초과 시 장문 문자로, 이미지 추가 시 포토 문자로 자동 전환 됩니다."></textarea> -->
+
+              <textarea
+                class="py-2 px-4 rounded-md bg-transparent w-full  h-[250px] focus:outline-none focus:ring-0 resize-none"
+                v-model="message.content.content" @input="calculateByte"
                 placeholder="내용을 입력해 주세요. 90byte 초과 시 장문 문자로, 이미지 추가 시 포토 문자로 자동 전환 됩니다."></textarea>
+
+
               <div class="flex justify-end mt-[8px]">
                 <button class="text-[#646464] rounded-full mx-[10px] bg-[#F5F5F5] w-[101px] h-[35px]">치환코드</button>
                 <button class="text-[#646464] rounded-full mx-[10px] bg-[#F5F5F5] w-[101px] h-[35px]">템플릿</button>
@@ -163,30 +176,15 @@
           <p class="text-[#797979]">- 이미지 파일 형식은 JPG, PNG, GIF만 가능합니다.</p>
 
 
-
-
-
-          <!-- <input type="file" @change="handleFileUpload"> -->
-          <!-- <button @click="uploadImage">Upload Image</button> -->
-
-
-
-
-
         </div>
 
         <!-- 오른쪽 -->
         <div :class="{ 'flex items-end': state.bottom }" class=" w-5/12 h-auto bg-transparent p-[30px] ">
 
-          <!-- <div class=" fixed top-48 w-[300px] h-[600px] border-[4px] border-[#4D4D4D] rounded-xl bg-[#EAF8FF]">
-
-          </div> -->
           <div :class="{ 'fixed top-16': state.isFixed }"
             class="w-[300px] h-[600px] border-[4px] border-[#4D4D4D] rounded-xl bg-[#EAF8FF]">
           </div>
         </div>
-
-
 
 
       </div>
@@ -228,13 +226,16 @@ import Footer from '../../js/components/Footer.vue'
 import { reactive, onMounted, onBeforeUnmount } from 'vue'
 import store from '../../store/index';
 
+const calculateByte = () => {
+  const content = message.content.content;
+  const byte = encodeURI(content).split(/%..|./).length - 1;
+  message.content.byte = byte;
+};
 
-const phoneNum = reactive({
-  newReceiverNumber: '',
-  receiverNumbers: [],
-});
 
-
+const removeReceiver = (index) => {
+  phoneNum.receiverNumbers.splice(index, 1);
+}
 
 const addReceiverNumber = () => {
   if (phoneNum.newReceiverNumber.trim() !== '') {
@@ -300,15 +301,18 @@ const img = reactive({
 const message = reactive({
   content: {
     email: store.state.email,
-    receiver_number: '',
     sender_number: '',
     title: '',
     content: '',
     isad: false,
-    image: ''
+    image: '',
+    byte: 0
 
   }
 })
+
+
+
 const navigation_2 = reactive([
   { name: '메세지 전송', href: '/message', current: true },
   { name: '발신번호 관리', href: '/credit', current: false },
@@ -318,7 +322,10 @@ const navigation_2 = reactive([
 
 ])
 
-
+const phoneNum = reactive({
+  newReceiverNumber: '',
+  receiverNumbers: [],
+});
 
 
 const sendMessage = () => {
@@ -326,66 +333,73 @@ const sendMessage = () => {
 
   const token = store.state.token
 
-  if (token != null && token !="") {
+  if (token != null && token != "") {
 
-    const formData = new FormData();
-    formData.append('image', message.content.image);
-    formData.append('email', message.content.email);
-    formData.append('receiver_number', phoneNum.receiverNumbers[0]);
-    formData.append('sender_number', message.content.sender_number);
-    formData.append('title', message.content.title);
-    formData.append('content', message.content.content);
-    formData.append('isad', message.content.isad);
+    if (phoneNum.receiverNumbers.length !== 0 || message.content.sender_number !== '' || message.content.title !== '' || message.content.content !== '') {
 
-
-    axios.post('/api/messages', formData, {
-      headers: {
-        'Authorization': 'Bearer ' + token
-      }
-    })
-      .then(response => {
-        alert("전송하였습니다.")
-        console.log(response.data)
-        send_receiver.message_id = Number(response.data['id']);
-        console.log('Image uploaded successfully');
+      const formData = new FormData();
+      formData.append('image', message.content.image);
+      formData.append('email', message.content.email);
+      formData.append('sender_number', message.content.sender_number);
+      formData.append('title', message.content.title);
+      formData.append('content', message.content.content);
+      formData.append('isad', message.content.isad);
 
 
-
-
-
-        for (const number in phoneNum.receiverNumbers) {
-          console.log(response.data['id'])
-          console.log(phoneNum.receiverNumbers[number])
-          axios.post('/api/messages/receiver', {
-
-            message_id: response.data['id'],
-            receiver_number: phoneNum.receiverNumbers[number]
-
-          }, {
-            headers: {
-              'Authorization': 'Bearer ' + token
-            }
-          })
-            .then(response => {
-              alert("전송하였습니다.")
-            })
-            .catch(error => {
-            });
-
+      axios.post('/api/messages', formData, {
+        headers: {
+          'Authorization': 'Bearer ' + token
         }
-
-
       })
-      .catch(error => {
-        console.error('Error uploading image', error);
-      });
+        .then(response => {
+          alert("전송하였습니다.")
+          console.log(response.data)
+          console.log('Image uploaded successfully');
+
+
+
+
+
+          for (const number in phoneNum.receiverNumbers) {
+            console.log(response.data['id'])
+            console.log(phoneNum.receiverNumbers[number])
+            axios.post('/api/messages/receiver', {
+
+              message_id: response.data['id'],
+              receiver_number: phoneNum.receiverNumbers[number]
+
+            }, {
+              headers: {
+                'Authorization': 'Bearer ' + token
+              }
+            })
+              .then(response => {
+              })
+              .catch(error => {
+              });
+
+          }
+
+
+        })
+        .catch(error => {
+          console.error('Error uploading image', error);
+        });
+    } else {
+
+
+      alert("내용을 모두 입력해주세요.")
+    }
 
 
 
 
 
 
-  }else{
+
+
+
+  } else {
     alert("로그인을 해주세요.")
   }
 

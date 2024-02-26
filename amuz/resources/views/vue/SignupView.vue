@@ -17,7 +17,7 @@
                         class="py-2 px-4 rounded-md bg-white w-[700px] mb-[60px] border border-[#CECECE] h-[50px] focus:outline-none focus:ring-0"
                         placeholder="8자 이상, 영문 혹은 영문과 숫자조합" />
                     <p class="font-bold mb-[14px]">비밀번호</p>
-                    <input type="text" v-model="signupinf.signup.pw"
+                    <input type="password" v-model="signupinf.signup.pw"
                         class="py-2 px-4 rounded-md bg-white w-[700px] mb-[60px] border border-[#CECECE] h-[50px] focus:outline-none focus:ring-0"
                         placeholder="비밀번호를 입력해 주세요" />
                     <p class="font-bold mb-[14px]">비밀번호 확인</p>

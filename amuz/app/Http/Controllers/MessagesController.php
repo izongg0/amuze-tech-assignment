@@ -17,7 +17,6 @@ class MessagesController extends Controller
     
         $message = new Messages();
         $message->email = $request->input('email');
-        $message->receiver_number = $request->input('receiver_number');
         $message->sender_number = $request->input('sender_number');
         $message->title = $request->input('title');
         $message->image = $imagePath; 
